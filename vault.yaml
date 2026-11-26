@@ -1,0 +1,25 @@
+---
+- name: Install and Configure Vault
+  hosts: webservers
+  become: yes
+
+  tasks:
+    - name: Add HashiCorp Repository
+      yum_repository:
+        name: hashicorp
+        description: HashiCorp Stable Repository
+        baseurl: https://rpm.releases.hashicorp.com/AmazonLinux/$releasever/$basearch/stable
+        enabled: yes
+        gpgcheck: yes
+        gpgkey: https://rpm.releases.hashicorp.com/gpg
+
+    - name: Install Vault
+      dnf:
+        name: vault
+        state: present
+
+    - name: Start Vault Service
+      service:
+        name: vault
+        state: started
+        enabled: yes
