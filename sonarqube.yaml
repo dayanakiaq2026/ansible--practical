@@ -1,0 +1,33 @@
+---
+- name: Install SonarQube using Docker
+  hosts: webservers
+  become: yes
+
+  tasks:
+    - name: Install Docker
+      dnf:
+        name: docker
+        state: present
+
+    - name: Start Docker
+      service:
+        name: docker
+        state: started
+        enabled: yes
+
+    - name: Set vm.max_map_count
+      sysctl:
+        name: vm.max_map_count
+        value: "524288"
+        state: present
+        sysctl_set: yes
+
+    - name: Run SonarQube container
+      command: >
+        docker run -d
+        --name sonarqube
+        --restart unless-stopped
+        -p 9000:9000
+        sonarqube:community
+      args:
+        creates: /tmp/sonarqube-container-created
