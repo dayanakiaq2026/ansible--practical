@@ -1,0 +1,20 @@
+---
+- name: Install and Configure Docker
+  hosts: webservers
+  become: yes
+
+  tasks:
+    - name: Install Docker
+      dnf:
+        name: docker
+        state: present
+
+    - name: Start Docker service
+      service:
+        name: docker
+        state: started
+        enabled: yes
+
+On Thu, 26 Nov, 2026, 18:09 Dayana Nancy, <dayananancy21@gmail.com> wrote:
+[webservers]
+web1 ansible_host=YOUR_EC2_PUBLIC_IP ansible_user=ec2-user
