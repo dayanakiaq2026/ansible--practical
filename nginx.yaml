@@ -1,0 +1,21 @@
+---
+- name: Install and Configure Nginx
+  hosts: webservers
+  become: yes
+
+  tasks:
+    - name: Install Nginx
+      dnf:
+        name: nginx
+        state: present
+
+    - name: Start Nginx
+      service:
+        name: nginx
+        state: started
+        enabled: yes
+
+    - name: Create Web Page
+      copy:
+        content: "Welcome to Nginx Server"
+        dest: /usr/share/nginx/html/index.html
